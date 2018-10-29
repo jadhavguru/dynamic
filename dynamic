@@ -1,0 +1,81 @@
+from bs4 import BeautifulSoup as soup
+import request
+from selenium import webdriver
+import time
+from selenium.webdriver.common.keys import Keys
+
+#browse dynamically used
+browser = webdriver.Firefox()
+browser.get("https://twitter.com/hashtag/news")
+
+
+
+
+##Scrolling multiple pages
+elem = browser.find_element_by_tag_name("html")
+
+no_of_pagedowns = 2
+
+while no_of_pagedowns:
+    elem.send_keys(Keys.PAGE_DOWN)
+    time.sleep(0.2)
+    no_of_pagedowns-=1
+
+    elem.send_keys(Keys.END)
+    time.sleep(8)
+
+    if no_of_pagedowns==0:
+        my_url = browser.execute_script("return document.documentElement.outerHTML")
+
+        soup1 = soup(my_url, 'html.parser')
+
+        #######################
+        containers = soup1.find_all(class_="content")
+
+        # fetching time sleep
+        time.sleep(1)
+
+        ##One by one element retrive
+
+        for container in containers:
+            print(container)
+            # title = container.find_all(class_="fullname show-popup-with-id u-textTruncate ")
+            # print(title[0].text)
+            #
+            #
+            # #tweet = container.find_all("p", {"class": "TweetTextSize  js-tweet-text tweet-text"})
+            # #print(tweet[0].text)
+            #
+            # date = container.find_all(class_="_timestamp js-short-timestamp ")
+            # print(date[1].text)
+
+
+
+        browser.quit()
+
+
+
+
+
+
+
+"""for t in page_soup.find_all("div",{"class":"js-stream-item stream-item stream-item"}):
+    try:
+        print(soup.prettify([0]))
+    except ValueError:
+        print("inerror")"""
+"""containers=[]
+#containers=page_soup.find("div",{"class":'tweet js-stream-tweet js-actionable-tweet js-profile-popup-actionable dismissible-contentoriginal-tweet js-original-tweet'})
+div = page_soup.find_all('div')
+
+
+containers = list(div)
+
+
+# regular expression
+pattern = r"class=stream-item-header"
+
+#print(len(containers))
+
+#containers1 = page_soup.find_all("li", {"class": 'js-stream-item stream-item stream-item'})
+#print(len(containers1))"""
